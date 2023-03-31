@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<nav id="sidebar" class="sidebar" th:fragment="leftNav">
+    <div class="sidebar-content js-simplebar" style="padding-top: 50px">
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-item"
+                th:classappend="${#request.getRequestURI().startsWith('/authFree/movie') ? 'active' : ''}">
+                <a class="sidebar-link" href="/authFree/movie/list">
+                    <span class="align-middle">Filmy</span>
+                </a>
+            </li>
+            <li class="sidebar-item"
+                th:if="${session.loggedUser != null}"
+                th:classappend="${#request.getRequestURI().startsWith('/user/movie/favorites') ? 'active' : ''}">
+                <a class="sidebar-link" href="/user/movie/favorites/list">
+                    <span class="align-middle">Ulubione</span>
+                </a>
+            </li>
+
+            <div th:if="${session.loggedUser == null}">
+                <li class="sidebar-item"
+                    th:classappend="${#request.getRequestURI().startsWith('/login') ? 'active' : ''}">
+                    <a class="sidebar-link" href="/login">
+                        <span class="align-middle">Logowanie</span>
+                    </a>
+                </li>
+                <li class="sidebar-item"
+                    th:classappend="${#request.getRequestURI().startsWith('/register') ? 'active' : ''}">
+                    <a class="sidebar-link" href="/register">
+                        <span class="align-middle">Rejestracja</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </div>
+</nav>

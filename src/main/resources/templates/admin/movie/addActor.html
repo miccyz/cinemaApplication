@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments/head::head"></head>
+
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
+<div class="wrapper">
+
+    <nav th:replace="fragments/admin/leftNav::leftNav"></nav>
+
+    <div class="main">
+        <nav th:replace="fragments/topNav::topNav"></nav>
+
+        <main class="content">
+            <div class="container-fluid p-0">
+                <div style="margin-bottom: 50px">
+                    <ul class="nav nav-pills card-header-pills pull-right" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="${'edit?id=' + movieId}">Film</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active disabled">Dodaj aktora</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <table id="datatables-reponsive" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                                <th style="width: 5%">Akcje</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, item : ${actorList}">
+                                <td th:text="${item.index + 1}"></td>
+                                <td th:text="${i.firstName}"></td>
+                                <td th:text="${i.lastName}"></td>
+                                <td class="table-action">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Akcje
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <form action="addActor" method="post">
+                                                <input type="hidden" name="movieId" th:value="${movieId}">
+                                                <input type="hidden" name="actorId" th:value="${i.id}">
+                                                <button class="dropdown-item" type="submit">Dodaj</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments/footer::footer"></footer>
+    </div>
+</div>
+
+<div th:replace="fragments/bottomImports::bottomImports"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#datatables-reponsive").DataTable({
+            responsive: true,
+            "language": {
+                "search": "Wyszukaj:",
+                "lengthMenu": "Wyświetl _MENU_ pozycji na stronie",
+                "zeroRecords": "Brak pozycji do wyświetlenia",
+                "info": "Strona _PAGE_ z _PAGES_",
+                "infoEmpty": "Brak pozycji do wyświetlenia",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

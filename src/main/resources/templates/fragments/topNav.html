@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<nav class="navbar navbar-expand navbar-light navbar-bg" th:fragment="topNav">
+
+    <a class="sidebar-toggle" style="margin-left: 20px">
+        <i class="hamburger align-self-center"></i>
+    </a>
+
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+            <div th:if="${session.loggedUser != null}">
+                <li class="nav-item dropdown">
+                    <spant
+                            th:if="${session.loggedUser.role.name.equals('ADMIN')}"
+                            th:text="${#request.getRequestURI().startsWith('/admin') ? 'Panel Admina' : 'Panel użytkownika'}"
+                    ></spant>
+
+                    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                        <i class="align-middle" data-feather="settings"></i>
+                    </a>
+
+                    <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                        <img src="../../../assets/img/default1.png"
+                             class="avatar img-fluid rounded-circle me-1"
+                             alt="Chris Wood"/> <span class="text-dark" th:text="${session.loggedUser.email}"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item"
+                           th:if="${session.loggedUser.role.name.equals('ADMIN')}"
+                           th:text="${#request.getRequestURI().startsWith('/admin') ? 'Panel użytkownika' : 'Panel admina'}"
+                           th:href="${#request.getRequestURI().startsWith('/admin') ? '/authFree/movie/list' : '/admin/user/list'}"
+                        ></a>
+
+                        <a class="dropdown-item" href="/logout">Wyloguj</a>
+                    </div>
+                </li>
+            </div>
+        </ul>
+    </div>
+</nav>

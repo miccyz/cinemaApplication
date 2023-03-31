@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments/head::head"></head>
+
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
+<div class="wrapper">
+
+    <nav th:replace="fragments/user/leftNav::leftNav"></nav>
+
+    <div class="main">
+        <nav th:replace="fragments/topNav::topNav"></nav>
+
+        <main class="content">
+            <div class="container-fluid p-0">
+
+                <div style="margin-bottom: 50px">
+                    <ul class="nav nav-pills card-header-pills pull-right" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active disabled">Szczegóły</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="card-body">
+                                        <div class="row g-2">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <p
+                                                            id="title"
+                                                            class="form-control"
+                                                            th:text="${movie.title}"
+                                                    ></p>
+                                                    <label for="title">Tytuł</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <p
+                                                            id="releaseDate"
+                                                            class="form-control"
+                                                            th:text="${movie.releaseDate}"
+                                                    ></p>
+                                                    <label for="releaseDate">Premiera</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2" style="margin-top: 2px">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <p
+                                                            id="type"
+                                                            class="form-control"
+                                                            th:text="${movie.type.polishName}"
+                                                    ></p>
+                                                    <label for="type">Typ</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <div class="form-floating">
+                                                        <p
+                                                                id="durationInMinutes"
+                                                                class="form-control"
+                                                                th:text="${movie.durationInMinutes}"
+                                                        ></p>
+                                                        <label for="durationInMinutes">Czas trwania w
+                                                            minutach</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2" style="margin-top: 2px">
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <p
+                                                            id="cinema"
+                                                            class="form-control"
+                                                            th:text="${movie.cinema.name}"
+                                                    ></p>
+
+                                                    <label for="cinema">Kino</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md">
+                                                <div class="form-floating">
+                                                    <p
+                                                            id="stageManager"
+                                                            class="form-control"
+                                                            th:text="${movie.stageManager}"
+                                                    ></p>
+                                                    <label for="stageManager">Reżyser</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="h3 mb-3">Repertuar</h1>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatables-reponsive1" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP</th>
+                                <th>Data</th>
+                                <th>Rozpoczęcie</th>
+                                <th>Zakończenie</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, item : ${movie.movieDateList}">
+                                <td th:text="${item.index + 1}"></td>
+                                <td th:text="${i.date}"></td>
+                                <td th:text="${i.startTime}"></td>
+                                <td th:text="${i.endTime}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="h3 mb-3">Lista aktorów</h1>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatables-reponsive2" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, item : ${movie.actorList}">
+                                <td th:text="${item.index + 1}"></td>
+                                <td th:text="${i.firstName}"></td>
+                                <td th:text="${i.lastName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="fragments/footer::footer"></footer>
+    </div>
+</div>
+
+<div th:replace="fragments/bottomImports::bottomImports"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#datatables-reponsive1").DataTable({
+            responsive: true,
+            "language": {
+                "search": "Wyszukaj:",
+                "lengthMenu": "Wyświetl _MENU_ pozycji na stronie",
+                "zeroRecords": "Brak pozycji do wyświetlenia",
+                "info": "Strona _PAGE_ z _PAGES_",
+                "infoEmpty": "Brak pozycji do wyświetlenia",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#datatables-reponsive2").DataTable({
+            responsive: true,
+            "language": {
+                "search": "Wyszukaj:",
+                "lengthMenu": "Wyświetl _MENU_ pozycji na stronie",
+                "zeroRecords": "Brak pozycji do wyświetlenia",
+                "info": "Strona _PAGE_ z _PAGES_",
+                "infoEmpty": "Brak pozycji do wyświetlenia",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments/head::head"></head>
+
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
+<div class="wrapper">
+
+    <nav th:replace="fragments/admin/leftNav::leftNav"></nav>
+
+    <div class="main">
+        <nav th:replace="fragments/topNav::topNav"></nav>
+
+        <main class="content">
+            <div class="container-fluid p-0">
+                <div class="mb-2">
+                    <h1 class="h3 mb-3">Filmy
+                        <a href="add">
+                            <i class="align-middle me-2 fas fa-fw fa-plus-square"></i>
+                        </a>
+                    </h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <table id="datatables-reponsive" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP</th>
+                                <th>Tytuł</th>
+                                <th>Premiera</th>
+                                <th>Typ</th>
+                                <th>Kino</th>
+                                <th style="width: 5%">Akcje</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, item : ${movieList}">
+                                <td th:text="${item.index + 1}"></td>
+                                <td th:text="${i.title}"></td>
+                                <td th:text="${i.releaseDate}"></td>
+                                <td th:text="${i.type.polishName}"></td>
+                                <td th:text="${i.cinema.name}"></td>
+                                <td class="table-action">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Akcje
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <form action="edit" method="get">
+                                                <input type="hidden" name="id" th:value="${i.id}">
+                                                <button class="dropdown-item" type="submit">Edycja</button>
+                                            </form>
+                                            <form action="remove" method="post">
+                                                <input type="hidden" name="id" th:value="${i.id}">
+                                                <button class="dropdown-item" type="submit">Usuń</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments/footer::footer"></footer>
+    </div>
+</div>
+
+<div th:replace="fragments/bottomImports::bottomImports"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#datatables-reponsive").DataTable({
+            responsive: true,
+            "language": {
+                "search": "Wyszukaj:",
+                "lengthMenu": "Wyświetl _MENU_ pozycji na stronie",
+                "zeroRecords": "Brak pozycji do wyświetlenia",
+                "info": "Strona _PAGE_ z _PAGES_",
+                "infoEmpty": "Brak pozycji do wyświetlenia",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

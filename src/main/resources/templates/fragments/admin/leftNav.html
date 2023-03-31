@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<nav id="sidebar" class="sidebar" th:fragment="leftNav">
+    <div class="sidebar-content js-simplebar" style="padding-top: 50px">
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-item" th:classappend="${#request.getRequestURI().startsWith('/admin/user') ? 'active' : ''}">
+                <a class="sidebar-link" href="/admin/user/list">
+                    <span class="align-middle">Użytkownik</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${#request.getRequestURI().startsWith('/admin/cinema') ? 'active' : ''}">
+                <a class="sidebar-link" href="/admin/cinema/list">
+                    <span class="align-middle">Kino</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${#request.getRequestURI().startsWith('/admin/actor') ? 'active' : ''}">
+                <a class="sidebar-link" href="/admin/actor/list">
+                    <span class="align-middle">Aktor</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${#request.getRequestURI().startsWith('/admin/stageManager') ? 'active' : ''}">
+                <a class="sidebar-link" href="/admin/stageManager/list">
+                    <span class="align-middle">Reżyser</span>
+                </a>
+            </li>
+            <li class="sidebar-item" th:classappend="${#request.getRequestURI().startsWith('/admin/movie') ? 'active' : ''}">
+                <a class="sidebar-link" href="/admin/movie/list">
+                    <span class="align-middle">Filmy</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="fragments/head::head"></head>
+
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
+<div class="wrapper">
+
+    <nav th:replace="fragments/user/leftNav::leftNav"></nav>
+
+    <div class="main">
+        <nav th:replace="fragments/topNav::topNav"></nav>
+
+        <main class="content">
+            <div class="container-fluid p-0">
+                <form action="list" method="get">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <input
+                                                id="title"
+                                                class="form-control"
+                                                minlength="3"
+                                                maxlength="60"
+                                                name="title"
+                                                th:value="${title}"
+                                        >
+                                        <label for="title">Tytuł</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <input
+                                                id="releaseDate"
+                                                class="form-control"
+                                                type="date"
+                                                name="releaseDate"
+                                                th:value="${releaseDate}"
+                                        >
+                                        <label for="releaseDate">Premiera</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <input
+                                                id="movieDate"
+                                                class="form-control"
+                                                type="date"
+                                                name="movieDate"
+                                                th:value="${movieDate}"
+                                        >
+                                        <label for="movieDate">Data grania</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <select
+                                                id="cinema"
+                                                class="form-control"
+                                                name="cinemaId"
+                                        >
+                                            <option value="-1" th:selected="${cinemaId == -1}">Wszystko</option>
+                                            <option th:each="i : ${cinemaList}" th:text="${i.name}"
+                                                    th:value="${i.id}" th:selected="${cinemaId == i.id}"></option>
+                                        </select>
+                                        <label for="cinema">Kino</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <select
+                                                id="stageManager"
+                                                class="form-control"
+                                                name="stageManagerId"
+                                        >
+                                            <option value="-1" th:selected="${stageManagerId == -1}">Wszystko</option>
+                                            <option th:each="i : ${stageManagerList}" th:text="${i}"
+                                                    th:value="${i.id}" th:selected="${stageManagerId == i.id}"></option>
+                                        </select>
+                                        <label for="stageManager">Reżyser</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-none d-xxl-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <select
+                                                id="actor"
+                                                class="form-control"
+                                                name="actorId"
+                                        >
+                                            <option value="-1" th:selected="${actorId == -1}">Wszystko</option>
+                                            <option th:each="i : ${actorList}" th:text="${i}"
+                                                    th:value="${i.id}" th:selected="${actorId == i.id}"></option>
+                                        </select>
+                                        <label for="actor">Aktor</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-auto flex-grow-1 d-none d-xxl-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body py-4">
+                                    <div class="form-floating">
+                                        <select
+                                                id="movieTypes"
+                                                class="form-control"
+                                                name="movieType"
+                                        >
+                                            <option th:each="i : ${movieTypes}" th:text="${i.polishName}"
+                                                    th:value="${i}" th:selected="${movieType.equals(i)}"></option>
+                                        </select>
+                                        <label for="movieTypes">Gatunek</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2" style="text-align: center">
+                        <button class="btn btn-primary" type="submit">Szukaj</button>
+                    </div>
+                </form>
+
+                <div class="mb-2">
+                    <h1 class="h3 mb-3">Filmy</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <table id="datatables-reponsive" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>LP</th>
+                                <th>Tytuł</th>
+                                <th>Premiera</th>
+                                <th>Typ</th>
+                                <th>Kino</th>
+                                <th style="width: 5%">Akcje</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="i, item : ${movieList}">
+                                <td th:text="${item.index + 1}"></td>
+                                <td th:text="${i.title}"></td>
+                                <td th:text="${i.releaseDate}"></td>
+                                <td th:text="${i.type.polishName}"></td>
+                                <td th:text="${i.cinema.name}"></td>
+                                <td class="table-action">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Akcje
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <form action="details" method="get">
+                                                <input type="hidden" name="id" th:value="${i.id}">
+                                                <button class="dropdown-item" type="submit">Szczegóły</button>
+                                            </form>
+                                            <form
+                                                    th:if="${session.loggedUser != null}"
+                                                    action="/user/movie/favorites/add" method="post"
+                                            >
+                                                <input type="hidden" name="movieId" th:value="${i.id}">
+                                                <button class="dropdown-item" type="submit">Dodaj do ulubionych</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="fragments/footer::footer"></footer>
+    </div>
+</div>
+
+<div th:replace="fragments/bottomImports::bottomImports"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#datatables-reponsive").DataTable({
+            responsive: true,
+            "language": {
+                "search": "Wyszukaj:",
+                "lengthMenu": "Wyświetl _MENU_ pozycji na stronie",
+                "zeroRecords": "Brak pozycji do wyświetlenia",
+                "info": "Strona _PAGE_ z _PAGES_",
+                "infoEmpty": "Brak pozycji do wyświetlenia",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>
